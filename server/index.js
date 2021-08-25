@@ -1,11 +1,19 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
+const cors = require('cors');
+require('./db');
+const { getAllEntries, postOneEntry } = require('./controllers');
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-// app.get('/', function (req, res) {
-//   res.send('Hello World')
-// });
 app.use(express.static(path.join(__dirname, '../', 'client', 'dist')));
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.listen(3000);
+app.get('/entries', getAllEntries);
+app.post('/entry', postOneEntry);
+
+app.listen(PORT);

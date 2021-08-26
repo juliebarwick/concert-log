@@ -1,0 +1,67 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+p {
+  font-family: 'Roboto', sans-serif;
+  font-weight: lighter;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Roboto Slab', serif;
+}
+
+/* input[type="date" i] {
+  font-family: inherit;
+} */
+
+input[type="file" i] {
+  font-family: 'Roboto', sans-serif;
+  font-weight: lighter;
+}
+
+/* Buttons */
+button {
+  padding: 10px 20px;
+  font-family: 'Roboto Slab', serif;
+  text-transform: uppercase;
+  border: 1px solid #272727;
+  display: block;
+  cursor: pointer;
+  background-color: #fff;
+  color: #272727;
+}
+
+button:hover {
+  border: 1px solid #767676;
+  color: #767676;
+}
+
+/* Reference: https://css-tricks.com/snippets/css/custom-file-input-styling-webkitblink/ */
+.custom-file-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
+.custom-file-input::before {
+  content: 'Select a Photo';
+  display: block;
+  /* background: linear-gradient(top, #f9f9f9, #e3e3e3); */
+  border: 1px solid #272727;;
+  padding: 10px 20px;
+  text-align: center;
+  outline: none;
+  white-space: nowrap;
+  /* -webkit-user-select: none; */
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.custom-file-input:hover::before {
+  border-color: #767676;
+}
+
+/* .custom-file-input:active::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+} */

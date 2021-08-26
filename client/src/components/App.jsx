@@ -1,13 +1,78 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import styled from 'styled-components';
+import './App.css';
+import Sidebar from './Sidebar';
+import MainEntryDisplay from './MainEntryDisplay';
+import MainHeader from './MainHeader';
+import AddForm from './AddForm';
 
-class App extends React.Component{
-  render(){
-    return(
-      <div className="App">
-        <h1> Hello, World! </h1>
-      </div>
-    );
+const MainContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  column-gap: 1em;
+`;
+
+const SideColumn = styled.div`
+  grid-column-start: 1;
+  border-right: 1px solid #edebe6;
+`;
+
+const MainColumn = styled.div`
+  grid-column-start: 2;
+  margin: 30px;
+`;
+
+const App = () => {
+  const [entries, setEntries] = useState([]);
+  const [currentDisplay, setCurrentDisplay] = useState({});
+  const [displayForm, setDisplayForm] = useState(false);
+
+  useEffect(() => {
+    axios.get('/entries')
+      .then((data) => {
+        // const sortedEntries = [...data.data].sort((a, b) => b.date.localeCompare(a.date));
+        // setEntries(sortedEntries);
+        // setCurrentDisplay(sortedEntries[0]);
+        setEntries(data.data);
+        setCurrentDisplay(data.data[0]);
+      })
+      .catch((err) => {
+        console.log('Error retrieving entries', err);
+      });
+  }, []);
+
+  if (!entries.length) {
+    // get loading image or something
+    // and dispplay some text like no entries, start a new one
+    return null;
   }
-}
+
+  return (
+    <>
+      <MainHeader />
+      {!entries.length
+        ? <button type="button">Add a journal entry!</button>
+        : (
+          <>
+            <MainContainer>
+              <SideColumn>
+                <Sidebar
+                  entries={entries}
+                  setCurrentDisplay={setCurrentDisplay}
+                  setDisplayForm={setDisplayForm}
+                />
+              </SideColumn>
+              <MainColumn>
+                {displayForm
+                  ? <AddForm />
+                  : <MainEntryDisplay currentDisplay={currentDisplay} />}
+              </MainColumn>
+            </MainContainer>
+          </>
+        )}
+    </>
+  );
+};
 
 export default App;

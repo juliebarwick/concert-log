@@ -132,18 +132,18 @@ const AddForm = () => {
           </StyledLabel>
         </StyledFormGroup>
         <StyledFormGroup>
-        <StyledLabel htmlFor="entry">
-          Details:
-          <StyledTextarea
-            type="text"
-            id="entry"
-            name="entry"
-            onChange={handleChange}
-            rows="4"
-            cols="20"
-            value={input.entry}
-          />
-        </StyledLabel>
+          <StyledLabel htmlFor="entry">
+            Details:
+            <StyledTextarea
+              type="text"
+              id="entry"
+              name="entry"
+              onChange={handleChange}
+              rows="4"
+              cols="20"
+              value={input.entry}
+            />
+          </StyledLabel>
         </StyledFormGroup>
         <WideButton type="submit" onClick={handleSubmit}>Log</WideButton>
       </form>

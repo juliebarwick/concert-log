@@ -28,23 +28,24 @@ const App = () => {
   const [currentDisplay, setCurrentDisplay] = useState({});
   const [displayForm, setDisplayForm] = useState(false);
 
-  useEffect(() => {
+  const getEntries = () => {
     axios.get('/entries')
       .then((data) => {
-        // const sortedEntries = [...data.data].sort((a, b) => b.date.localeCompare(a.date));
-        // setEntries(sortedEntries);
-        // setCurrentDisplay(sortedEntries[0]);
         setEntries(data.data);
         setCurrentDisplay(data.data[0]);
       })
       .catch((err) => {
         console.log('Error retrieving entries', err);
       });
+  };
+
+  useEffect(() => {
+    getEntries();
   }, []);
 
   if (!entries.length) {
-    // get loading image or something
-    // and dispplay some text like no entries, start a new one
+    // TODO: get loading image or something
+    // and display some text like no entries, start a new one
     return null;
   }
 
@@ -65,7 +66,7 @@ const App = () => {
               </SideColumn>
               <MainColumn>
                 {displayForm
-                  ? <AddForm />
+                  ? <AddForm getEntries={getEntries} />
                   : <MainEntryDisplay currentDisplay={currentDisplay} />}
               </MainColumn>
             </MainContainer>

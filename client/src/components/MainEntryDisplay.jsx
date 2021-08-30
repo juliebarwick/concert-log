@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { formatDate } from '../helpers';
 import axios from 'axios';
 import styled from 'styled-components';
+import { MdAddAPhoto } from 'react-icons/md';
+import { formatDate } from '../helpers';
+import PhotosView from './PhotosView';
+import EntryMap from './EntryMap';
 
 const StyledTitle = styled.h1`
   text-align: center;
@@ -21,27 +24,44 @@ const EntryHeader = styled.div`
 `;
 
 const MainEntryDisplay = ({ currentDisplay }) => {
-  const [photos, setPhotos] = useState([]);
+  const [photoToUpload, setPhotoToUpload] = useState([]);
+  const [coords, setCoords] = useState([]);
 
   useEffect(() => {
-    const options = {
-      url: './upload',
-    };
-    // setPhotos(currentDisplay.photos)
-  }, []);
+    if (currentDisplay) {
+      axios.get('/mapaddress', { params: { address: currentDisplay.address } })
+        .then((data) => {
+          const { lat } = data.data.geometry.location;
+          const { lng } = data.data.geometry.location;
+          setCoords({
+            lat,
+            lng,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [currentDisplay]);
 
   const doPatch = () => {
-    const options = {
-      url: `/upload/${currentDisplay._id}`,
-      method: 'patch',
-      data: {
-        photo: 'https://images.unsplash.com/photo-1501088430049-71c79fa3283e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80',
-      },
-    };
+    // TODO: rename, or make into a patch request
+    const formData = new FormData();
+    formData.append('photo', photoToUpload);
+    formData.append('id', currentDisplay._id);
 
-    axios(options)
-      .then((data) => console.log('data from the patch', data))
-      .catch((err) => console.log('err from the patch', err));
+    axios.post('/uploadmulter', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+      .then((data) => {
+        console.log('data from the doPatch', data);
+        setPhotoToUpload([]);
+      })
+      .catch((err) => {
+        console.log('err from the doPatch', err);
+      });
+  };
+
+  const handleFileInputChange = (e) => {
+    setPhotoToUpload(e.target.files[0]);
   };
 
   return (
@@ -52,12 +72,20 @@ const MainEntryDisplay = ({ currentDisplay }) => {
           <StyledDate>{formatDate(currentDisplay.concertDate)}</StyledDate>
         </EntryHeader>
         <p>{currentDisplay.entry}</p>
+        <PhotosView photos={currentDisplay.photos} />
       </div>
-      <div>
-        {photos.length ? <p>there are photos</p> : null}
-      </div>
-      <input type="file" className="custom-file-input"></input>
-      <button onClick={doPatch}>Upload Your photos</button>
+      <form>
+        <label htmlFor="file" className="custom-label">
+          <MdAddAPhoto />
+          Upload Your photos
+          <input type="file" id="file" className="custom-file-input" onChange={handleFileInputChange} />
+        </label>
+        <button type="button" onClick={doPatch}>Submit</button>
+      </form>
+      {/* {coords.length
+        ? <EntryMap location={coords} />
+        : null} */}
+        <EntryMap location={coords} />
     </>
   );
 };

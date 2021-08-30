@@ -1,11 +1,11 @@
 import React from 'react';
-import JournalEntriesList from './JournalEntriesList';
 import styled from 'styled-components';
+import JournalEntriesList from './JournalEntriesList';
 
 const FlexList = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
 `;
 
 const StyledSideBarTitle = styled.h3`

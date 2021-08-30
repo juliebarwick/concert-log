@@ -59,7 +59,7 @@ const WideButton = styled.button`
   width: 20%;
 `;
 
-const AddForm = () => {
+const AddForm = ({ getEntries }) => {
   const [input, setInput] = useState({
     title: '',
     concertDate: '',
@@ -69,6 +69,7 @@ const AddForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    getEntries();
     axios.post('/entry', input)
       .then((data) => {
         console.log(data);

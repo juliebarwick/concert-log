@@ -17,13 +17,10 @@ module.exports = {
 
   getPhotos: (id) => Entry.findById(id).select('photos'),
 
-  updatePhoto: async (id, url) => {
-    // const photos = await Entry.findById(id);
-    // photos.push(url);
-    // return Entry.save();
-    return Entry.findByIdAndUpdate(id, {
-      $push: { photos: url },
-    });
-  },
+  updatePhoto: async (id, filePath) => (
+    Entry.findByIdAndUpdate(id, {
+      $push: { photos: filePath },
+    })
+  ),
 
 };

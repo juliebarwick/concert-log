@@ -8,7 +8,7 @@ export const formatDate = (date) => {
   return `${month} ${day}, ${year}`;
 };
 
-export const removeFinalPunctuation = (word) => {
+const removeFinalPunctuation = (word) => {
   const punctuation = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/;
   if (punctuation.test(word[word.length - 1])) {
     return word.split('').slice(0, word.length - 1).join('');

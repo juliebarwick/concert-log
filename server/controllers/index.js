@@ -1,4 +1,9 @@
-const { createEntry, getEntries, getPhotos, updatePhoto } = require('../models');
+const {
+  createEntry,
+  getEntries,
+  getPhotos,
+  updatePhoto,
+} = require('../models');
 
 module.exports = {
   getAllEntries: async (req, res) => {
@@ -11,7 +16,6 @@ module.exports = {
   },
 
   postOneEntry: async (req, res) => {
-    console.log(req.body);
     try {
       await createEntry(req.body);
       res.sendStatus(201);
@@ -30,13 +34,11 @@ module.exports = {
   },
 
   updateOnePhoto: async (req, res) => {
-    console.log(req);
-    const id = req.params.id;
-    const url = req.body.photo;
-
+    const { path } = req.file;
+    const { id } = req.body;
     try {
-      const photo = await updatePhoto(id, url);
-      res.sendStatus(204).json(photo);
+      const photo = await updatePhoto(id, path);
+      res.status(204).json(photo);
     } catch (err) {
       res.status(500).send(err.message);
     }

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { formatDate, removeFinalPunctuation, truncate } from '../helpers';
+import { formatDate, truncate } from '../helpers';
 
 const StyledEntry = styled.div`
   border-bottom: 1px solid #edebe6;

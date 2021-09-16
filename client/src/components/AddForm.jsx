@@ -59,7 +59,7 @@ const WideButton = styled.button`
   width: 20%;
 `;
 
-const AddForm = ({ getEntries }) => {
+const AddForm = ({ getEntries, setDisplayForm }) => {
   const [input, setInput] = useState({
     title: '',
     concertDate: '',
@@ -69,7 +69,6 @@ const AddForm = ({ getEntries }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    getEntries();
     axios.post('/entry', input)
       .then((data) => {
         console.log(data);
@@ -82,6 +81,10 @@ const AddForm = ({ getEntries }) => {
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        getEntries();
+        setDisplayForm(false);
       });
   };
 

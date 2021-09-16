@@ -66,7 +66,7 @@ const App = () => {
               </SideColumn>
               <MainColumn>
                 {displayForm
-                  ? <AddForm getEntries={getEntries} />
+                  ? <AddForm getEntries={getEntries} setDisplayForm={setDisplayForm} />
                   : <MainEntryDisplay currentDisplay={currentDisplay} />}
               </MainColumn>
             </MainContainer>

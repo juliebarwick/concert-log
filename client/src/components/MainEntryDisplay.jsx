@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import { MdAddAPhoto } from 'react-icons/md';
 import { formatDate } from '../helpers';
 import PhotosView from './PhotosView';
 import EntryMap from './EntryMap';
+import UploadPhoto from './UploadPhoto';
 
 const StyledTitle = styled.h1`
   text-align: center;
@@ -23,9 +23,21 @@ const EntryHeader = styled.div`
   margin: 10px;
 `;
 
+const StyledImg = styled.img`
+  width: 100px;
+`;
+
+const ImgDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+`;
+
 const MainEntryDisplay = ({ currentDisplay }) => {
   const [photoToUpload, setPhotoToUpload] = useState([]);
   const [coords, setCoords] = useState([]);
+  const [imagePreview, setImagePreview] = useState([]);
 
   useEffect(() => {
     if (currentDisplay) {
@@ -54,6 +66,7 @@ const MainEntryDisplay = ({ currentDisplay }) => {
       .then((data) => {
         console.log('data from the doPatch', data);
         setPhotoToUpload([]);
+        setImagePreview([]);
       })
       .catch((err) => {
         console.log('err from the doPatch', err);
@@ -62,6 +75,7 @@ const MainEntryDisplay = ({ currentDisplay }) => {
 
   const handleFileInputChange = (e) => {
     setPhotoToUpload(e.target.files[0]);
+    setImagePreview(URL.createObjectURL(e.target.files[0]));
   };
 
   return (
@@ -74,14 +88,17 @@ const MainEntryDisplay = ({ currentDisplay }) => {
         <p>{currentDisplay.entry}</p>
         <PhotosView photos={currentDisplay.photos} />
       </div>
-      <form>
-        <label htmlFor="file" className="custom-label">
-          <MdAddAPhoto />
-          Upload Your photos
-          <input type="file" id="file" className="custom-file-input" onChange={handleFileInputChange} />
-        </label>
-        <button type="button" onClick={doPatch}>Submit</button>
-      </form>
+      {imagePreview.length
+        ? (
+          <ImgDiv>
+            <StyledImg src={imagePreview} />
+          </ImgDiv>
+        )
+        : null}
+      <UploadPhoto
+        doPatch={doPatch}
+        handleFileInputChange={handleFileInputChange}
+      />
       {/* {coords.length
         ? <EntryMap location={coords} />
         : null} */}

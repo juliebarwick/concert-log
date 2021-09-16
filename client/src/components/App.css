@@ -37,16 +37,18 @@ input[type="file"] {
 .custom-label {
   padding: 10px 20px;
   font-family: 'Roboto Slab', serif;
+  font-size: .8em;
   text-transform: uppercase;
   border: 1px solid #272727;
   display: block;
+  width: auto;
   cursor: pointer;
-  background-color: #fff;
-  color: #272727;
+  background-color: #272727;
+  color: #fff;
   text-align: center;
+  border-radius: 20px;
 }
 
 .custom-label:hover {
-  border: 1px solid #767676;
-  color: #767676;
+  color: #a5a5a5;
 }

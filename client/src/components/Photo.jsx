@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const StyledImg = styled.img`
-  width: 50%;
+  height: 300px;
   box-shadow: 1px 2px 6px;
 `;
 

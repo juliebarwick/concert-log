@@ -14,14 +14,11 @@ This app helps you track the different concerts that you attend. Being a musicia
 ![Concert Log](https://github.com/juliebarwick/concert-log/blob/main/gif/concert-log.gif?raw=true)
 
 ## Tech Stack
-**Client:** React, styled-components, Google Maps API
-**Server:** Node, Express, Google Maps API
-**Database:** MongoDB
+* **Client:** React, styled-components, Google Maps API
+* **Server:** Node, Express, Google Maps API
+* **Database:** MongoDB
 
-## How to Get Started
-
-## Requirements
-
+## Run Locally
 ```bash
   git clone https://github.com/juliebarwick/concert-log.git
 ```

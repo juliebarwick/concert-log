@@ -23,15 +23,15 @@ This app helps you track the different concerts that you attend. Being a musicia
   git clone https://github.com/juliebarwick/concert-log.git
 ```
 
-Go to the project directory
+#### Go to the project directory
 
 ```bash
   cd concert-log
 ```
 
-Create an `uploads` folder in root directory
+#### Create an `uploads` folder in root directory
 
-Get *two* different Google API keys:
+#### Get *two* different Google API keys:
 [Google Maps Api](https://developers.google.com/maps/documentation/javascript/overview)
 1. Obtain an API key for Geo Location
 - Create an `.env` file like `example.env` and add your API key
@@ -39,22 +39,21 @@ Get *two* different Google API keys:
 - Create a `config.js` file like `example.config.js` (in client) and add the API key
 ** Be sure you have your maps have [restricted access](https://cloud.google.com/blog/products/maps-platform/google-maps-platform-best-practices-restricting-api-keys)
 
-Install dependencies
+#### Install dependencies
 
 ```bash
   npm install
 ```
 
-Start the server
+#### Start the server
 
 ```bash
   npm run start
 ```
 
-Make sure mongoDB is running locally
+#### Make sure mongoDB is running locally
 
-
-Start webpack
+#### Start webpack
 
 ```bash
   npm run build

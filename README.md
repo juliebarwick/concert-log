@@ -29,6 +29,16 @@ Go to the project directory
   cd concert-log
 ```
 
+Create an `uploads` folder in root directory
+
+Get *two* different Google API keys:
+[Google Maps Api](https://developers.google.com/maps/documentation/javascript/overview)
+1. Obtain an API key for Geo Location
+- Create an `.env` file like `example.env` and add your API key
+2. Obtain an API key for Maps general
+- Create a `config.js` file like `example.config.js` (in client) and add the API key
+** Be sure you have your maps have [restricted access](https://cloud.google.com/blog/products/maps-platform/google-maps-platform-best-practices-restricting-api-keys)
+
 Install dependencies
 
 ```bash
@@ -42,6 +52,7 @@ Start the server
 ```
 
 Make sure mongoDB is running locally
+
 
 Start webpack
 

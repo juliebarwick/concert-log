@@ -1,4 +1,5 @@
 import React from 'react';
+import Search from './Search';
 import styled from 'styled-components';
 
 const StyledHeader = styled.header`
@@ -18,6 +19,7 @@ const MainHeader = () => (
   <StyledHeader>
     <Title>Concert Log</Title>
     <h3>a place to log your concerts</h3>
+    <Search />
   </StyledHeader>
 );
 

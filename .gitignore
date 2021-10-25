@@ -77,7 +77,7 @@ Thumbs.db
 .vscode/*
 
 # Compiled output
-client/dist/bundle.js
+client/dist/bundle.*
 uploads/*
 
 # Api config

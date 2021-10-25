@@ -25,14 +25,17 @@ const MainColumn = styled.div`
 
 const App = () => {
   const [entries, setEntries] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentDisplay, setCurrentDisplay] = useState({});
   const [displayForm, setDisplayForm] = useState(false);
 
   const getEntries = () => {
+    setIsLoading(true);
     axios.get('/entries')
       .then((data) => {
         setEntries(data.data);
         setCurrentDisplay(data.data[0]);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log('Error retrieving entries', err);
@@ -43,17 +46,18 @@ const App = () => {
     getEntries();
   }, []);
 
-  if (!entries.length) {
-    // TODO: get loading image or something
-    // and display some text like no entries, start a new one
-    return null;
-  }
-
   return (
     <>
       <MainHeader />
       {!entries.length
-        ? <button type="button">Add a journal entry!</button>
+        ? (
+          <>
+            <button type="button">Add a journal entry!</button>
+            <div>
+              <AddForm getEntries={getEntries} setDisplayForm={setDisplayForm} />
+            </div>
+          </>
+        )
         : (
           <>
             <MainContainer>

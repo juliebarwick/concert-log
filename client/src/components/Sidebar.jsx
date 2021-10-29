@@ -30,15 +30,21 @@ const Sidebar = ({ entries, setCurrentDisplay, setDisplayForm }) => {
 
   return (
     <FlexList>
-      <StyledButton onClick={handleClick} type="button">
-        Add a Concert
-      </StyledButton>
-      <StyledSideBarTitle>Your Log</StyledSideBarTitle>
-      <JournalEntriesList
-        entries={entries}
-        setCurrentDisplay={setCurrentDisplay}
-        setDisplayForm={setDisplayForm}
-      />
+      {entries.length
+        ? (
+          <>
+            <StyledButton onClick={handleClick} type="button">
+              Add a Concert
+            </StyledButton>
+            <StyledSideBarTitle>Your Log</StyledSideBarTitle>
+            <JournalEntriesList
+              entries={entries}
+              setCurrentDisplay={setCurrentDisplay}
+              setDisplayForm={setDisplayForm}
+            />
+          </>
+        )
+        : <StyledSideBarTitle>No entries yet</StyledSideBarTitle>}
     </FlexList>
   );
 };

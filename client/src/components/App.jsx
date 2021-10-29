@@ -27,7 +27,7 @@ const App = () => {
   const [entries, setEntries] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentDisplay, setCurrentDisplay] = useState({});
-  const [displayForm, setDisplayForm] = useState(false);
+  const [displayForm, setDisplayForm] = useState(true);
 
   const getEntries = () => {
     setIsLoading(true);
@@ -49,33 +49,20 @@ const App = () => {
   return (
     <>
       <MainHeader />
-      {!entries.length
-        ? (
-          <>
-            <button type="button">Add a journal entry!</button>
-            <div>
-              <AddForm getEntries={getEntries} setDisplayForm={setDisplayForm} />
-            </div>
-          </>
-        )
-        : (
-          <>
-            <MainContainer>
-              <SideColumn>
-                <Sidebar
-                  entries={entries}
-                  setCurrentDisplay={setCurrentDisplay}
-                  setDisplayForm={setDisplayForm}
-                />
-              </SideColumn>
-              <MainColumn>
-                {displayForm
-                  ? <AddForm getEntries={getEntries} setDisplayForm={setDisplayForm} />
-                  : <MainEntryDisplay currentDisplay={currentDisplay} />}
-              </MainColumn>
-            </MainContainer>
-          </>
-        )}
+      <MainContainer>
+        <SideColumn>
+          <Sidebar
+            entries={entries}
+            setCurrentDisplay={setCurrentDisplay}
+            setDisplayForm={setDisplayForm}
+          />
+        </SideColumn>
+        <MainColumn>
+          {displayForm
+            ? <AddForm getEntries={getEntries} setDisplayForm={setDisplayForm} />
+            : <MainEntryDisplay currentDisplay={currentDisplay} />}
+        </MainColumn>
+      </MainContainer>
     </>
   );
 };

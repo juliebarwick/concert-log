@@ -9,11 +9,11 @@ const FlexList = styled.div`
 `;
 
 const StyledSideBarTitle = styled.h3`
+  margin-top: 30px;
   text-align: center;
   font-size: 1.5em;
   text-transform: uppercase;
   letter-spacing: .1em;
-  padding: 10px;
   color: #65bbcc;
 `;
 
@@ -23,6 +23,11 @@ const StyledButton = styled.button`
   margin: 20px;
 `;
 
+const NoEntriesParagraph = styled.p`
+  padding: 10px;
+  font-style: italic;
+`;
+
 const Sidebar = ({ entries, setCurrentDisplay, setDisplayForm }) => {
   const handleClick = () => {
     setDisplayForm(true);
@@ -30,21 +35,22 @@ const Sidebar = ({ entries, setCurrentDisplay, setDisplayForm }) => {
 
   return (
     <FlexList>
-      {entries.length
-        ? (
-          <>
-            <StyledButton onClick={handleClick} type="button">
-              Add a Concert
-            </StyledButton>
-            <StyledSideBarTitle>Your Log</StyledSideBarTitle>
-            <JournalEntriesList
-              entries={entries}
-              setCurrentDisplay={setCurrentDisplay}
-              setDisplayForm={setDisplayForm}
-            />
-          </>
-        )
-        : <StyledSideBarTitle>No entries yet</StyledSideBarTitle>}
+      <>
+        <StyledSideBarTitle>Your Log</StyledSideBarTitle>
+        {entries.length
+          ? (
+            <>
+              <StyledButton onClick={handleClick} type="button">
+                Add a Concert
+              </StyledButton>
+              <JournalEntriesList
+                entries={entries}
+                setCurrentDisplay={setCurrentDisplay}
+                setDisplayForm={setDisplayForm}
+              />
+            </>
+          ) : <NoEntriesParagraph>No entries</NoEntriesParagraph>}
+      </>
     </FlexList>
   );
 };

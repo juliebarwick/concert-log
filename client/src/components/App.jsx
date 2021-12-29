@@ -25,6 +25,7 @@ const MainColumn = styled.div`
 
 const App = () => {
   const [entries, setEntries] = useState([]);
+  const [searchText, setSearchText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [currentDisplay, setCurrentDisplay] = useState({});
   const [displayForm, setDisplayForm] = useState(true);
@@ -46,23 +47,39 @@ const App = () => {
     getEntries();
   }, []);
 
+  const handleSearch = (search) => {
+    setSearchText(search);
+  };
+
+  const entriesDisplay = entries.filter((e) => {
+    const search = searchText.toLowerCase();
+    return (
+      e.entry.toLowerCase().includes(search)
+      || e.address.toLowerCase().includes(search)
+      || e.title.toLowerCase().includes(search)
+    );
+  });
+
   return (
     <>
-      <MainHeader />
-      <MainContainer>
-        <SideColumn>
-          <Sidebar
-            entries={entries}
-            setCurrentDisplay={setCurrentDisplay}
-            setDisplayForm={setDisplayForm}
-          />
-        </SideColumn>
-        <MainColumn>
-          {displayForm
-            ? <AddForm getEntries={getEntries} setDisplayForm={setDisplayForm} />
-            : <MainEntryDisplay currentDisplay={currentDisplay} />}
-        </MainColumn>
-      </MainContainer>
+      <MainHeader onSearch={handleSearch} />
+      {!isLoading
+        ? (
+          <MainContainer>
+            <SideColumn>
+              <Sidebar
+                entries={entriesDisplay}
+                setCurrentDisplay={setCurrentDisplay}
+                setDisplayForm={setDisplayForm}
+              />
+            </SideColumn>
+            <MainColumn>
+              {displayForm
+                ? <AddForm getEntries={getEntries} setDisplayForm={setDisplayForm} />
+                : <MainEntryDisplay currentDisplay={currentDisplay} />}
+            </MainColumn>
+          </MainContainer>
+        ) : <p>Loading</p>}
     </>
   );
 };

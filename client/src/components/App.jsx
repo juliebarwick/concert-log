@@ -34,7 +34,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState({});
   const [currentDisplay, setCurrentDisplay] = useState({});
-  const [displayForm, setDisplayForm] = useState(false);
+  const [displayForm, setDisplayForm] = useState(true);
   const [isEditable, setIsEditable] = useState(false);
 
   const getEntries = (id) => {
@@ -42,6 +42,9 @@ const App = () => {
     axios.get('/entries')
       .then(({ data }) => {
         setEntries(data);
+        if (data.length) {
+          setDisplayForm(false);
+        }
         setIsLoading(false);
         if (id) {
           const newCurrentDisplay = data.filter((r) => id === r._id);

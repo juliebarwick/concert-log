@@ -23,4 +23,6 @@ module.exports = {
     })
   ),
 
+  updateEntry: async (id, entry) => Entry.findByIdAndUpdate(id, entry),
+
 };

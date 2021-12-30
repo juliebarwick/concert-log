@@ -3,6 +3,7 @@ const {
   getEntries,
   getPhotos,
   updatePhoto,
+  updateEntry,
 } = require('../models');
 
 module.exports = {
@@ -17,8 +18,8 @@ module.exports = {
 
   postOneEntry: async (req, res) => {
     try {
-      await createEntry(req.body);
-      res.sendStatus(201);
+      const newEntry = await createEntry(req.body);
+      res.status(201).send(newEntry._id);
     } catch (err) {
       res.status(500).send(err.message);
     }
@@ -35,10 +36,20 @@ module.exports = {
 
   updateOnePhoto: async (req, res) => {
     const { path } = req.file;
-    const { id } = req.body;
+    const { id } = req.params;
     try {
       const photo = await updatePhoto(id, path);
       res.status(204).json(photo);
+    } catch (err) {
+      res.status(500).send(err.message);
+    }
+  },
+
+  updateEntry: async (req, res) => {
+    const { id } = req.params;
+    try {
+      await updateEntry(id, req.body);
+      res.status(200).send(id);
     } catch (err) {
       res.status(500).send(err.message);
     }

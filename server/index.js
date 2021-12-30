@@ -47,7 +47,8 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/entries', controller.getAllEntries);
 app.post('/entry', controller.postOneEntry);
 app.get('/photos', controller.getAllPhotos);
-app.patch('/upload/:id', controller.updateOnePhoto);
+app.patch('/upload/:id', upload.single('photo'), controller.updateOnePhoto);
+app.patch('/entry/:id', controller.updateEntry);
 
 // Get address coordinates
 app.get('/mapaddress', (req, res) => {
@@ -62,12 +63,9 @@ app.get('/mapaddress', (req, res) => {
     .then((data) => {
       res.status(200).send(data.data.results[0]);
     })
-    .catch((err) => {
-      console.log(err);
+    .catch(() => {
       res.sendStatus(404);
     });
 });
-
-app.post('/uploadmulter', upload.single('photo'), controller.updateOnePhoto);
 
 app.listen(PORT);

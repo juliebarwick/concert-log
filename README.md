@@ -68,5 +68,4 @@ The app is ready at http://localhost:3000/
 
 ## Future features
 * Markdown parser, so you can write in markdown and have your entries formatted
-* Search for a specific entry
 * Design improvements

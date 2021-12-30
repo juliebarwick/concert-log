@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 import styled from 'styled-components';
-import { formatDate } from '../helpers';
 import PhotosView from './PhotosView';
 import EntryMap from './EntryMap';
 import UploadPhoto from './UploadPhoto';
+import Edit from './Edit';
+import { formatDate } from '../utils';
 
 const StyledTitle = styled.h1`
   text-align: center;
@@ -34,42 +36,53 @@ const ImgDiv = styled.div`
   margin-bottom: 15px;
 `;
 
-const MainEntryDisplay = ({ currentDisplay }) => {
+const MainEntryDisplay = ({
+  currentDisplay,
+  onEdit,
+  setError,
+  getEntries,
+}) => {
   const [photoToUpload, setPhotoToUpload] = useState([]);
   const [coords, setCoords] = useState([]);
   const [imagePreview, setImagePreview] = useState([]);
 
   useEffect(() => {
-    if (currentDisplay) {
+    if (currentDisplay.address) {
       axios.get('/mapaddress', { params: { address: currentDisplay.address } })
-        .then((data) => {
-          const { lat } = data.data.geometry.location;
-          const { lng } = data.data.geometry.location;
+        .then(({ data }) => {
+          const { lat } = data.geometry.location;
+          const { lng } = data.geometry.location;
           setCoords({
             lat,
             lng,
           });
         })
         .catch((err) => {
+          // eslint-disable-next-line no-console
           console.log(err);
         });
     }
   }, [currentDisplay]);
 
-  const doPatch = () => {
-    // TODO: rename, or make into a patch request
+  const handlePhotoUpload = (e) => {
+    e.preventDefault();
     const formData = new FormData();
     formData.append('photo', photoToUpload);
-    formData.append('id', currentDisplay._id);
 
-    axios.post('/uploadmulter', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
-      .then((data) => {
-        console.log('data from the doPatch', data);
+    const options = {
+      url: `/upload/${currentDisplay._id}`,
+      method: 'patch',
+      data: formData,
+      headers: { 'Content-Type': 'multipart/form-data' },
+    };
+    axios(options)
+      .then(() => {
         setPhotoToUpload([]);
         setImagePreview([]);
+        getEntries(currentDisplay._id);
       })
       .catch((err) => {
-        console.log('err from the doPatch', err);
+        setError(err);
       });
   };
 
@@ -85,6 +98,7 @@ const MainEntryDisplay = ({ currentDisplay }) => {
           <StyledTitle>{currentDisplay.title}</StyledTitle>
           <StyledDate>{formatDate(currentDisplay.concertDate)}</StyledDate>
         </EntryHeader>
+        <Edit onEdit={onEdit} />
         <p>{currentDisplay.entry}</p>
         <PhotosView photos={currentDisplay.photos} />
       </div>
@@ -96,15 +110,29 @@ const MainEntryDisplay = ({ currentDisplay }) => {
         )
         : null}
       <UploadPhoto
-        doPatch={doPatch}
+        onSubmit={handlePhotoUpload}
         handleFileInputChange={handleFileInputChange}
+        hasBeenUploaded={imagePreview.length > 0}
       />
-      {/* {coords.length
+      {coords.lat
         ? <EntryMap location={coords} />
-        : null} */}
-        <EntryMap location={coords} />
+        : null}
     </>
   );
 };
 
 export default MainEntryDisplay;
+
+MainEntryDisplay.propTypes = {
+  currentDisplay: PropTypes.shape({
+    _id: PropTypes.string,
+    address: PropTypes.string,
+    concertDate: PropTypes.string,
+    entry: PropTypes.string,
+    title: PropTypes.string,
+    photos: PropTypes.arrayOf(PropTypes.string),
+  }).isRequired,
+  onEdit: PropTypes.func.isRequired,
+  setError: PropTypes.func.isRequired,
+  getEntries: PropTypes.func.isRequired,
+};

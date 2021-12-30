@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const StyledInput = styled.input`
@@ -56,36 +56,31 @@ const StyledFormGroup = styled.div`
 `;
 
 const WideButton = styled.button`
-  width: 20%;
+  margin: 10px 0;
+  width: 30%;
 `;
 
-const AddForm = ({ getEntries, setDisplayForm }) => {
-  const [input, setInput] = useState({
-    title: '',
-    concertDate: '',
-    entry: '',
-    address: '',
-  });
+const AddForm = ({
+  initialFormValues,
+  isEditable,
+  onSubmit,
+  onCancel,
+}) => {
+  const [input, setInput] = useState(initialFormValues);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('/entry', input)
-      .then((data) => {
-        console.log(data);
-        setInput({
-          title: '',
-          concertDate: '',
-          entry: '',
-          address: '',
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        getEntries();
-        setDisplayForm(false);
-      });
+    let isPost = true;
+    if (isEditable) {
+      isPost = false;
+    }
+    onSubmit(input, isPost);
+    setInput({
+      title: '',
+      concertDate: '',
+      entry: '',
+      address: '',
+    });
   };
 
   const handleChange = (e) => {
@@ -97,7 +92,7 @@ const AddForm = ({ getEntries, setDisplayForm }) => {
 
   return (
     <>
-      <StyledFormTitle>Add a Concert</StyledFormTitle>
+      <StyledFormTitle>{`${isEditable ? 'Edit Your' : 'Add a'} Concert`}</StyledFormTitle>
       <form>
         <StyledFormGroup>
           <StyledLabel htmlFor="title">
@@ -149,10 +144,23 @@ const AddForm = ({ getEntries, setDisplayForm }) => {
             />
           </StyledLabel>
         </StyledFormGroup>
-        <WideButton type="submit" onClick={handleSubmit}>Log</WideButton>
+        <WideButton type="submit" onClick={handleSubmit}>{isEditable ? 'Finish Editing' : 'Log'}</WideButton>
+        <WideButton type="button" onClick={() => onCancel(false)}>Cancel</WideButton>
       </form>
     </>
   );
 };
 
 export default AddForm;
+
+AddForm.propTypes = {
+  initialFormValues: PropTypes.shape({
+    title: PropTypes.string,
+    concertDate: PropTypes.string,
+    entry: PropTypes.string,
+    address: PropTypes.string,
+  }).isRequired,
+  isEditable: PropTypes.bool.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+};

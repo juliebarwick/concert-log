@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { formatDate, truncate } from '../utils';
 
@@ -41,3 +42,13 @@ const JournalEntry = ({ entry, setCurrentDisplay, setDisplayForm }) => {
 };
 
 export default JournalEntry;
+
+JournalEntry.propTypes = {
+  entry: PropTypes.shape({
+    title: PropTypes.string,
+    concertDate: PropTypes.string,
+    entry: PropTypes.string,
+  }).isRequired,
+  setCurrentDisplay: PropTypes.func.isRequired,
+  setDisplayForm: PropTypes.func.isRequired,
+};

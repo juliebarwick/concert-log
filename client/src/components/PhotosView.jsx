@@ -20,6 +20,10 @@ const PhotosView = ({ photos }) => (
 
 export default PhotosView;
 
+PhotosView.propTypes = {
+  photos: PropTypes.arrayOf(PropTypes.string),
+};
+
 PhotosView.defaultProps = {
   photos: [],
 };

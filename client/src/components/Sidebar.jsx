@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import JournalEntriesList from './JournalEntriesList';
+import JournalEntry from './JournalEntry';
 
 const FlexList = styled.div`
   display: flex;
@@ -28,7 +29,12 @@ const NoEntriesParagraph = styled.p`
   font-style: italic;
 `;
 
-const Sidebar = ({ entries, setCurrentDisplay, setDisplayForm }) => {
+const Sidebar = ({
+  entries,
+  setCurrentDisplay,
+  setDisplayForm,
+  isEditable,
+}) => {
   const handleClick = () => {
     setDisplayForm(true);
   };
@@ -40,14 +46,21 @@ const Sidebar = ({ entries, setCurrentDisplay, setDisplayForm }) => {
         {entries.length
           ? (
             <>
-              <StyledButton onClick={handleClick} type="button">
-                Add a Concert
-              </StyledButton>
-              <JournalEntriesList
-                entries={entries}
-                setCurrentDisplay={setCurrentDisplay}
-                setDisplayForm={setDisplayForm}
-              />
+              {!isEditable && (
+                <StyledButton onClick={handleClick} type="button">
+                  Add a Concert
+                </StyledButton>
+              )}
+              {
+                entries.map((entry) => (
+                  <JournalEntry
+                    key={entry._id}
+                    entry={entry}
+                    setCurrentDisplay={setCurrentDisplay}
+                    setDisplayForm={setDisplayForm}
+                  />
+                ))
+              }
             </>
           ) : <NoEntriesParagraph>No entries</NoEntriesParagraph>}
       </>
@@ -56,3 +69,14 @@ const Sidebar = ({ entries, setCurrentDisplay, setDisplayForm }) => {
 };
 
 export default Sidebar;
+
+Sidebar.propTypes = {
+  entries: PropTypes.arrayOf(PropTypes.shape({
+    title: PropTypes.string,
+    concertDate: PropTypes.string,
+    entry: PropTypes.string,
+  })).isRequired,
+  setCurrentDisplay: PropTypes.func.isRequired,
+  setDisplayForm: PropTypes.func.isRequired,
+  isEditable: PropTypes.bool.isRequired,
+};
